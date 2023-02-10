@@ -23,7 +23,7 @@ services:
     volumes:
       - media_volume:/usr/src/app/images
     ports:
-      - 80:80
+      - 81:81
     depends_on:
       - web
 
