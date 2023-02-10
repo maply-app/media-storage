@@ -2,6 +2,7 @@ from core.api.errors import Errors
 import config
 import jwt
 
+
 class UserJWT:
 
     async def process_request(self, request, response):
