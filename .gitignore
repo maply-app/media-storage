@@ -1,0 +1,12 @@
+# MongoDB
+mongo-data
+
+# Python
+__pycache__/
+
+# Environment
+.env
+
+# Visual Studio Code
+.DS_Store
+.vscode/*

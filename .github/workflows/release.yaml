@@ -1,0 +1,49 @@
+name: Deploy
+
+on: [push]
+
+jobs:
+
+  deploy:
+    name: Deploy
+    runs-on: [ubuntu-latest]
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v3
+
+      - name: Install SSH key to host
+        uses: kielabokkie/ssh-key-and-known-hosts-action@v1.1.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          ssh-host: ${{ secrets.HOST_IP }}
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.x
+          architecture: x64
+
+      - name: Install correct version of Docker Compose
+        run: |
+          sudo pip install docker-compose
+          sudo pip install dump-env
+
+      - name: Add environment variables
+        run: |
+          touch .env
+          echo SIGNING_KEY=${{ secrets.SIGNING_KEY }} >> .env
+          echo MONGO_INITDB_ROOT_USERNAME=admin >> .env
+          echo MONGO_INITDB_ROOT_PASSWORD=${{ secrets.MONGO_INITDB_ROOT_PASSWORD }} >> .env
+          echo MONGO_INITDB_DATABASE=database >> .env
+          echo MONGO_HOST=db >> .env
+          echo MONGO_PORT=27017 >> .env
+
+      - name: Cleaning up and start remote Docker Compose
+        run: |
+          docker context create \
+            --docker host=ssh://${{ secrets.HOST_USERNAME }}@${{ secrets.HOST_IP }} \
+            --description="Remote engine at ${{ secrets.HOST_IP }}" \
+            remote
+          docker context use remote
+          docker-compose --context remote down
+          docker-compose --context remote up -d --force-recreate --build

@@ -1,0 +1,12 @@
+# Git
+.github
+.gitignore
+
+# Python
+.env
+
+# Local MongoDB data
+mongo-data
+
+# Other
+.README.md
