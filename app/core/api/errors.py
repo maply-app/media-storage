@@ -31,3 +31,4 @@ class Errors:
     DownloadError = CustomException(3010, "Error when uploading a file")
     Unauthorized = CustomException(401, "Unauthorized")
     HttpResponseForbidden = CustomException(403, "Http response forbidden")
+    HTTPMethodNotAllowed = CustomException(405, "Http method not allowed")
