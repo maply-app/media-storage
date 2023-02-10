@@ -1,12 +1,13 @@
 from core.api.errors import Errors
 import config
 import jwt
+import base64
 
 
 class UserJWT:
 
     async def process_request(self, request, response):
-        header = request.headers.get("Authorization")
+        header = request.headers.get("authorization")
         if not header:
             raise Errors.Unauthorized
         headerParts = header.split(" ")
@@ -18,4 +19,3 @@ class UserJWT:
             jwt.decode(headerParts[1], config.SIGNING_KEY, algorithms=["HS256"])
         except:
             raise Errors.Unauthorized
-
