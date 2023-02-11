@@ -16,6 +16,6 @@ class UserJWT:
             raise Errors.Unauthorized
 
         try:
-            jwt.decode(headerParts[1], config.SIGNING_KEY, algorithms=["HS256"])
+            jwt.decode(headerParts[1], bytes(config.SIGNING_KEY, encoding="utf8"), algorithms=["HS256"])
         except:
             raise Errors.Unauthorized
