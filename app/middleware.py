@@ -1,7 +1,6 @@
 from core.api.errors import Errors
 import config
 import jwt
-import base64
 
 
 class UserJWT:

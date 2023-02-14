@@ -1,5 +1,6 @@
 from falcon.asgi import App
 import mongoengine
+from falcon_multipart.middleware import MultipartMiddleware
 from falcon import CORSMiddleware
 from falcon.errors import (
     HTTPRouteNotFound,
@@ -22,8 +23,12 @@ mongoengine.connect(host="mongodb://{}:{}@{}:27017/{}?authSource=admin".format(
 
 app = App(middleware=[
     UserJWT(),
+    MultipartMiddleware(),
     CORSMiddleware(allow_origins="*", allow_credentials="*")
 ])
+
+app.API(middleware=[MultipartMiddleware()])
+
 
 app.add_error_handler(CustomException, handle_custom_error)
 app.add_error_handler(HTTPRouteNotFound, handle_custom_404_error)
