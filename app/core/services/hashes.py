@@ -14,4 +14,4 @@ def generate_unique_hash():
 
 
 def generate_sha1_hash_by_value(value) -> str:
-    return hashlib.sha1(str(value).encode('utf-8')).hexdigest()
+    return hashlib.sha1(str(value).encode("utf-8")).hexdigest()
